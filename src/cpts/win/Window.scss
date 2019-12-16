@@ -1,0 +1,14 @@
+.Window {
+	position: absolute;
+	min-width: 20rem;
+	min-height: 8rem;
+	border: 1px solid red;
+	display: flex;
+	flex-direction: column;
+
+	& .operations {
+		display: flex;
+		background-color: #eee;
+		box-shadow: 0 0 3px #333;
+	}
+}

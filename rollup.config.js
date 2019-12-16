@@ -1,4 +1,6 @@
 import resolve from 'rollup-plugin-node-resolve';
+import zResolve from "@zrlps/rollup-plugin-resolve"
+import { preCfg } from "@zrlps/rollup-plugin-resolve"
 import replace from '@rollup/plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import svelte from 'rollup-plugin-svelte';
@@ -6,7 +8,43 @@ import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
+import sveltePreprocess from "svelte-preprocess"
+import magicImporter from "node-sass-magic-importer"
+// import { join } from "path"
 
+
+let magicImpterOpts = {
+	// Defines the path in which your node_modules directory is found.
+	cwd: process.cwd(),
+	// Define the package.json keys and in which order to search for them.
+	packageKeys: [
+		'sass',
+		'scss',
+		'style',
+		'css',
+		'main.sass',
+		'main.scss',
+		'main.style',
+		'main.css',
+		'main'
+	],
+	// You can set the special character for indicating a module resolution.
+	packagePrefix: '@',
+	// Disable console warnings.
+	disableWarnings: false,
+	// Disable importing files only once.
+	disableImportOnce: false,
+	// Add custom node filters.
+	customFilters: undefined
+}
+
+const preprocess = sveltePreprocess({
+	scss: {
+		importer: [
+			magicImporter(magicImpterOpts)
+		]
+	},
+})
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
@@ -25,6 +63,7 @@ export default {
 			}),
 			svelte({
 				dev,
+				preprocess,
 				hydratable: true,
 				emitCss: true
 			}),
@@ -32,6 +71,7 @@ export default {
 				browser: true,
 				dedupe
 			}),
+			zResolve(preCfg.sapper),
 			commonjs(),
 
 			legacy && babel({
@@ -68,12 +108,14 @@ export default {
 				'process.env.NODE_ENV': JSON.stringify(mode)
 			}),
 			svelte({
+				preprocess,
 				generate: 'ssr',
 				dev
 			}),
 			resolve({
 				dedupe
 			}),
+			zResolve(preCfg.sapper),
 			commonjs()
 		],
 		external: Object.keys(pkg.dependencies).concat(
@@ -88,6 +130,7 @@ export default {
 		output: config.serviceworker.output(),
 		plugins: [
 			resolve(),
+			zResolve(preCfg.sapper),
 			replace({
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode)

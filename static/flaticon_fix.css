@@ -1,0 +1,31 @@
+/* flaticon fix */
+[class^="flaticon-"],
+[class*=" flaticon-"],
+[class^="flaticon-"],
+[class*=" flaticon-"] {
+	display: inline-flex;
+	line-height: 1;
+}
+[class^="flaticon-"]:before,
+[class*=" flaticon-"]:before,
+[class^="flaticon-"]:after,
+[class*=" flaticon-"]:after {
+	font-family: Flaticon;
+	font-style: normal;
+	margin: 0;
+	font-size: inherit;
+}
+
+[class^="flaticon-"].x1,
+[class*=" flaticon-"].x1,
+[class^="flaticon-"].x1,
+[class*=" flaticon-"].x1 {
+	font-size: 16px;
+}
+
+[class^="flaticon-"].x2,
+[class*=" flaticon-"].x2,
+[class^="flaticon-"].x2,
+[class*=" flaticon-"].x2 {
+	font-size: 32px;
+}
