@@ -1,4 +1,6 @@
 import { timestamp, files, shell, routes } from '@sapper/service-worker';
+import sync from "@/sync/main";
+import { be } from './swwrap';
 
 const ASSETS = `cache${timestamp}`;
 
@@ -21,14 +23,30 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
 	event.waitUntil(
 		caches.keys().then(async keys => {
+
 			// delete old caches
 			for (const key of keys) {
 				if (key !== ASSETS) await caches.delete(key);
 			}
 
-			self.clients.claim();
+			await self.clients.claim();
 		})
 	);
+});
+
+self.addEventListener("message", ({ data, source }) => {
+	let { type } = data;
+	if (type === "setup") {
+		be.setup({ source })
+	} else if (type === "lose") {
+		be.lose({ source })
+	} else if (type === "subscribe") {
+		be.subscribe({ source, data })
+	} else if (type === "unsubscribe") {
+		be.unsubscribe({ source, data })
+	} else {
+		// nothing
+	}
 });
 
 self.addEventListener('fetch', event => {
@@ -71,7 +89,7 @@ self.addEventListener('fetch', event => {
 					const response = await fetch(event.request);
 					cache.put(event.request, response.clone());
 					return response;
-				} catch(err) {
+				} catch (err) {
 					const response = await cache.match(event.request);
 					if (response) return response;
 

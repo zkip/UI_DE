@@ -1,7 +1,5 @@
 <script>
-  import Nav from "@/cpts/Nav.svelte";
 
-  //   export let segment;
 </script>
 
 <style>
@@ -16,8 +14,6 @@
     flex-direction: column;
   }
 </style>
-
-<Nav />
 
 <main>
   <slot />

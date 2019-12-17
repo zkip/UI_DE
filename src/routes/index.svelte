@@ -6,28 +6,19 @@
 <script>
   import Win from "@/cpts/win/Win";
   import * as sapper from "@sapper/app";
-  import { create, pool } from "@/store";
+  import { side } from "@/store";
   import { onMount } from "svelte";
+  import { readable, writable } from "svelte/store";
+  import { Source } from "@/swwrap";
   let store = sapper.stores();
   let { page } = store;
-  //   console.log(store, create, get);
+  Source();
 
-  onMount(() => {
-    // addEventListener("mousedown", ({ clientX, clientY }) => {
-    // });
-  });
+  onMount(() => {});
 
   function newWin({ clientX, clientY }) {
     let id = create({ x: clientX, y: clientY });
   }
-
-  $: {
-    console.log($pool);
-  }
-
-  $: isConfirm = typeof $page.query["confirm"] !== "undefined";
-
-  //   goto("/about");
 </script>
 
 <style>
@@ -66,13 +57,13 @@
       <button on:click={newWin}>create</button>
     </div>
     <div class="info">
-      {#each Object.entries($pool) as [id, win]}
+      <!-- {#each Object.entries($pool) as [id, win]}
         <span>{win.x},{win.y}</span>
-      {/each}
+      {/each} -->
     </div>
   </div>
   <div class="content">
-    {#each Object.entries($pool) as [id, win]}
+    <!-- {#each Object.entries($pool) as [id, win]}
       <Win
         {...win}
         on:move={({ detail }) => {
@@ -81,6 +72,6 @@
         }}>
         sdf
       </Win>
-    {/each}
+    {/each} -->
   </div>
 </div>

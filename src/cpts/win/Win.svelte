@@ -17,6 +17,8 @@
         if (which !== 1) return;
         let ipx = x,
           ipy = y;
+        let cl = wrap =>
+          Object.entries(fn).map(([name, fn]) => wrap("mouse" + name, fn));
         const fn = {
           move({ clientX: nx, clientY: ny }) {
             x = ipx + (nx - ix);
@@ -26,11 +28,6 @@
           up() {
             cl(removeEventListener);
           }
-        };
-        let cl = wrap => {
-          Object.entries(fn).map(([name, fn]) => {
-            wrap("mouse" + name, fn);
-          });
         };
         cl(addEventListener);
       }
