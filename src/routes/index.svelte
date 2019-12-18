@@ -6,13 +6,17 @@
 <script>
   import Win from "@/cpts/win/Win";
   import * as sapper from "@sapper/app";
-  import { side } from "@/store";
+  import { side } from "@/stores";
   import { onMount } from "svelte";
   import { readable, writable } from "svelte/store";
   import { Source } from "@/swwrap";
+  import { source } from "@/store";
   let store = sapper.stores();
   let { page } = store;
-  Source();
+  let { pool } = source({
+    pool: "window/pool"
+  });
+  console.log(source({ name: "F", k: "F" }));
 
   onMount(() => {});
 

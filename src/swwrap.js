@@ -1,5 +1,5 @@
 import { writable, derived } from "svelte/store"
-import { actions, state } from "@/store"
+import { actions, state } from "@/stores"
 
 const dependencies = {}
 
@@ -90,5 +90,5 @@ export function side(path) {
 
 // Readable
 export function Source(path) {
-	return derived(state[path])
+	// return derived(state[path])
 }
