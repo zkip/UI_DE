@@ -1,6 +1,5 @@
 import resolve from 'rollup-plugin-node-resolve';
-import zResolve from "@zrlps/rollup-plugin-resolve"
-import { preCfg } from "@zrlps/rollup-plugin-resolve"
+import zResolve, { preConfig } from "@zrlps/rollup-plugin-resolve"
 import replace from '@rollup/plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import svelte from 'rollup-plugin-svelte';
@@ -67,11 +66,11 @@ export default {
 				hydratable: true,
 				emitCss: true
 			}),
+			zResolve(preConfig.sapper),
 			resolve({
 				browser: true,
 				dedupe
 			}),
-			zResolve(preCfg.sapper),
 			commonjs(),
 
 			legacy && babel({
@@ -112,10 +111,10 @@ export default {
 				generate: 'ssr',
 				dev
 			}),
+			zResolve(preConfig.sapper),
 			resolve({
 				dedupe
 			}),
-			zResolve(preCfg.sapper),
 			commonjs()
 		],
 		external: Object.keys(pkg.dependencies).concat(
@@ -129,8 +128,8 @@ export default {
 		input: config.serviceworker.input(),
 		output: config.serviceworker.output(),
 		plugins: [
+			zResolve(preConfig.sapper),
 			resolve(),
-			zResolve(preCfg.sapper),
 			replace({
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode)
